@@ -28,6 +28,5 @@ def predict(filepath):
     else:
         print("fireeeeeee")
 
-
 download_img(file_path)
 predict(file_path)
