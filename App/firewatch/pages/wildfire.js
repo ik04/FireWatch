@@ -11,7 +11,7 @@ const wildfire = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const apiKey = process.env.API_KEY;
+  const apiKey = "HGgzNs8K2j8VrmMgNshhbbf4w1QYkKTUng0oBA5v";
   // const [thumbnailUrl, setThumbnailUrl] = useState();
   const url = "https://firewatch-5kkw.onrender.com/api/";
   const options = [
