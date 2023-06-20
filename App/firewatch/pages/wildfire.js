@@ -65,32 +65,36 @@ const wildfire = () => {
   const uploadModelInput = async (thumbnail) => {
     // * code for download and querying
     let thumbnailUrl = thumbnail;
-    await axios
-      .get(thumbnailUrl, { responseType: "blob" })
-      .then(function (response) {
-        const formData = new FormData();
+    try {
+      await axios
+        .get(thumbnailUrl, { responseType: "blob" })
+        .then(function (response) {
+          const formData = new FormData();
 
-        formData.append("image", response.data, "1.png");
+          formData.append("image", response.data, "1.png");
 
-        axios
-          .post(url, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(function (response) {
-            // console.log(response);
-            setDisplayImage(response.data.image_path);
-            setResult(response.data.result);
-            setLoading(false);
-          })
-          .catch(function (error) {
-            console.error("Request failed:", error);
-          });
-      })
-      .catch(function (error) {
-        console.error("Failed to download thumbnail image:", error);
-      });
+          axios
+            .post(url, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then(function (response) {
+              // console.log(response);
+              setDisplayImage(response.data.image_path);
+              setResult(response.data.result);
+              setLoading(false);
+            })
+            .catch(function (error) {
+              console.error("Request failed:", error);
+            });
+        })
+        .catch(function (error) {
+          console.error("Failed to download thumbnail image:", error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const handleSwitch = () => {
     setShow((prev) => !prev);
