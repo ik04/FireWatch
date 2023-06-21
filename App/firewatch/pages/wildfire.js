@@ -10,6 +10,7 @@ const wildfire = () => {
   const [result, setResult] = useState();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const apiKey = "HGgzNs8K2j8VrmMgNshhbbf4w1QYkKTUng0oBA5v";
   // const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -27,6 +28,7 @@ const wildfire = () => {
   ];
   const [drop, setDrop] = useState(options[0]);
   const callNasaApi = async (e) => {
+    setIsSubmit(true);
     if (!show) {
       setLoading(true);
       if (longitude !== "" && latitude !== "" && date !== "") {
@@ -41,6 +43,7 @@ const wildfire = () => {
             uploadModelInput(resp.data.url);
           }
         } catch (error) {
+          setIsSubmit(false);
           console.log(error); // !toast
           // console.log(error.response.data.msg); // !toast
         }
@@ -56,6 +59,7 @@ const wildfire = () => {
           uploadModelInput(resp.data.url);
         }
       } catch (error) {
+        setIsSubmit(false);
         console.log(error); // !toast
         // console.log(error.response.data.msg); // !toast
       }
@@ -83,7 +87,10 @@ const wildfire = () => {
               // console.log(response);
               setDisplayImage(response.data.image_path);
               setResult(response.data.result);
+            })
+            .then(() => {
               setLoading(false);
+              setIsSubmit(false);
             })
             .catch(function (error) {
               console.error("Request failed:", error);
@@ -94,6 +101,7 @@ const wildfire = () => {
         });
     } catch (error) {
       console.log(error);
+      setIsSubmit(false);
     }
   };
   const handleSwitch = () => {
@@ -126,12 +134,21 @@ const wildfire = () => {
                   ))}
                 </select>
 
-                <button
-                  className="text-white hover:scale-105 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
-                  type="submit"
-                >
-                  Submit
-                </button>
+                {isSubmit ? (
+                  <button
+                    className="text-white hover:scale-105 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    className="text-white cursor-not-allowed opacity-50 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
+                    type="button"
+                  >
+                    Submit
+                  </button>
+                )}
               </form>
             </>
           ) : (
