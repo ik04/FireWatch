@@ -11,6 +11,7 @@ const wildfire = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [error, setError] = useState("");
 
   const apiKey = "HGgzNs8K2j8VrmMgNshhbbf4w1QYkKTUng0oBA5v";
   // const [thumbnailUrl, setThumbnailUrl] = useState();
@@ -28,6 +29,8 @@ const wildfire = () => {
   ];
   const [drop, setDrop] = useState(options[0]);
   const callNasaApi = async (e) => {
+    setResult();
+    setError("");
     setIsSubmit(true);
     if (!show) {
       setLoading(true);
@@ -53,7 +56,8 @@ const wildfire = () => {
       console.log(drop);
       try {
         let nasaUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${drop.lon}&lat=${drop.lat}&date=${drop.date}&&dim=0.10&api_key=${apiKey}`;
-        console.log(nasaUrl);
+        // console.log(nasaUrl);
+        console.log("sent");
         const resp = await axios.get(nasaUrl);
         if (resp.data.url) {
           uploadModelInput(resp.data.url);
@@ -93,7 +97,9 @@ const wildfire = () => {
               setIsSubmit(false);
             })
             .catch(function (error) {
-              console.error("Request failed:", error);
+              setError("please try again");
+              console.log(error);
+              setIsSubmit(false);
             });
         })
         .catch(function (error) {
@@ -143,7 +149,7 @@ const wildfire = () => {
                   </button>
                 ) : (
                   <button
-                    className="text-white cursor-not-allowed opacity-50 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
+                    className="text-white cursor-progress opacity-50 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
                     type="button"
                   >
                     Submit
@@ -190,19 +196,34 @@ const wildfire = () => {
                     name="date"
                     onChange={(e) => setDate(e.target.value)}
                   />
-                  <button
-                    type="submit"
-                    className="text-2xl px-3 py-2 text-white rounded-3xl bg-white-400 border-2"
-                  >
-                    Submit
-                  </button>
 
-                  {/* violated DRY :[ */}
+                  {!isSubmit ? (
+                    <button
+                      type="submit"
+                      className="text-2xl px-3 py-2 text-white rounded-3xl bg-white-400 border-2"
+                    >
+                      Submit
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="text-2xl px-3 py-2 text-white rounded-3xl bg-white-400 border-2 opacity-50 cursor-progress"
+                    >
+                      Submit
+                    </button>
+                  )}
                 </form>
               </div>
             </div>
           )}
         </div>
+        {
+          <>
+            <h1 className="text-5xl text-yellow-300 text-center font-semibold">
+              {error}
+            </h1>
+          </>
+        }
         {result ? (
           <div className="flex justify-center items-center flex-col mt-5">
             <h1 className="text-5xl text-white font-semibold">{result}</h1>
@@ -235,3 +256,4 @@ const wildfire = () => {
 };
 
 export default wildfire;
+// todo: disable options and inputs like the butto while the request is sent
