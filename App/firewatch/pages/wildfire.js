@@ -134,7 +134,7 @@ const wildfire = () => {
                   ))}
                 </select>
 
-                {isSubmit ? (
+                {!isSubmit ? (
                   <button
                     className="text-white hover:scale-105 self-center my-8 mx-5 px-5 py-2 bg-white-500 bg-opacity-50 rounded-full xl:text-xl border-2"
                     type="submit"
