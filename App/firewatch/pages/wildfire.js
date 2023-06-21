@@ -13,6 +13,8 @@ const wildfire = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const [error, setError] = useState("");
 
+  const controller = new AbortController();
+
   const apiKey = "HGgzNs8K2j8VrmMgNshhbbf4w1QYkKTUng0oBA5v";
   // const [thumbnailUrl, setThumbnailUrl] = useState();
   const url = "https://firewatch-5kkw.onrender.com/api/";
@@ -41,7 +43,7 @@ const wildfire = () => {
         try {
           let nasaUrl = `https://api.nasa.gov/planetary/earth/assets?lon=${longitude}&lat=${latitude}&date=${date}&&dim=0.10&api_key=${apiKey}`;
           console.log(nasaUrl);
-          const resp = await axios.get(nasaUrl);
+          const resp = await axios.get(nasaUrl, { signal: controller.signal });
           if (resp.data.url) {
             uploadModelInput(resp.data.url);
           }
@@ -83,6 +85,7 @@ const wildfire = () => {
 
           axios
             .post(url, formData, {
+              signal: controller.signal,
               headers: {
                 "Content-Type": "multipart/form-data",
               },
@@ -111,6 +114,7 @@ const wildfire = () => {
     }
   };
   const handleSwitch = () => {
+    controller.abort();
     setShow((prev) => !prev);
     setResult();
     setLoading(false);
