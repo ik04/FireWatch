@@ -15,7 +15,7 @@ const wildfire = () => {
 
   const controller = new AbortController();
 
-  const apiKey = "HGgzNs8K2j8VrmMgNshhbbf4w1QYkKTUng0oBA5v";
+  const apiKey = "ifAHb64rK915Dh2PmimBXrjt9dfmgRlsavYJSEbY";
   // const [thumbnailUrl, setThumbnailUrl] = useState();
   const url = "https://firewatch-5kkw.onrender.com/api/";
   const options = [
